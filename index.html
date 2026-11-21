@@ -2,32 +2,61 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Z IMOB · Hoje</title>
 <meta name="apple-mobile-web-app-title" content="Z IMOB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="application-name" content="Z IMOB">
 <meta name="theme-color" content="#F5F0E8">
+<meta name="robots" content="noindex">
 <link rel="apple-touch-icon" href="icone-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icone-192.png">
 <link rel="manifest" href="manifest.json">
-<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,600&family=Poppins:wght@400;500;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#F5F0E8;color:#1E1E1E;font-family:Arial,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
-img{width:96px;height:96px;border-radius:22px}
-a{display:inline-block;margin-top:18px;background:#1E1E1E;color:#fff;text-decoration:none;padding:14px 22px;border-radius:14px;font-weight:bold}
-p{color:#6E685E;font-size:14px;max-width:320px}
+:root{--creme:#F5F0E8;--ouro:#C9A961;--carbono:#1E1E1E;--cinza:#6E685E;--linha:#CDC4B6}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--creme);color:var(--carbono);font-family:Poppins,Arial,sans-serif;display:flex;flex-direction:column;min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.topo{flex:0 0 auto;display:flex;justify-content:center;align-items:center;padding:56px 24px 40px}
+.topo img{height:64px;width:auto}
+.cartao{flex:1;background:#FFFDF9;border-radius:28px 28px 0 0;padding:36px 28px 28px;box-shadow:0 -6px 24px rgba(30,30,30,.06);display:flex;flex-direction:column}
+.data{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--cinza)}
+h1{font-family:Lora,Georgia,serif;font-style:italic;font-weight:600;font-size:30px;line-height:1.2;margin:10px 0 14px}
+.filete{width:44px;height:2px;background:var(--ouro);margin-bottom:18px}
+.titulo{font-family:Syncopate,Poppins,sans-serif;font-weight:700;text-transform:uppercase;font-size:15px;line-height:1.5;letter-spacing:.3px}
+.titulo .p2{border-left:3px solid var(--ouro);padding-left:10px;margin-top:4px}
+.titulo b{color:var(--ouro)}
+.frase{color:var(--cinza);font-size:14px;line-height:1.55;margin:18px 0 0}
+.espaco{flex:1;min-height:28px}
+.botao{display:block;width:100%;text-align:center;background:var(--carbono);color:#fff;text-decoration:none;font-weight:600;font-size:16px;padding:17px;border-radius:16px;letter-spacing:.3px}
+.botao:active{transform:scale(.99);opacity:.92}
+.rodape{text-align:center;font-size:11px;color:var(--cinza);margin-top:16px;letter-spacing:.4px}
+.dica{margin-top:18px;border-top:1px solid var(--linha);padding-top:14px;font-size:12.5px;color:var(--cinza);line-height:1.5}
+.dica b{color:var(--carbono)}
 </style>
 </head>
 <body>
-<img src="icone-180.png" alt="Z IMOB">
-<p>Z IMOB · Atendimento de hoje</p>
-<a id="ir" href="https://script.google.com/macros/s/AKfycbxjzn7om7SztPK49Al7cLBHUqxTR6SSM6yYhSuSJug39g0UaGnNNVH7WxywoD1LGrBX/exec">Abrir o app</a>
-<p>Para colocar na tela do celular: no iPhone, toque em Compartilhar e depois em "Adicionar à Tela de Início". No Android, toque nos três pontos e em "Adicionar à tela inicial".</p>
+<div class="topo"><img src="https://s01.jetimgs.com/tnnAwYXphKBPiW3sr35S56TSBu41PCPMXJgG4UpLuMhmB5uKGXsEydyXaxruLCKtnCpSbjr2aUMUGR45D19NgDiRAYQqbSAt8xiRVfy6DHJ0YsMaQ8i0Ji0D/imob3dhorizontalpng.webp" alt="Z IMOB"></div>
+<div class="cartao">
+  <div class="data" id="data"></div>
+  <h1 id="ola">É bom ter você de volta, Renan.</h1>
+  <div class="filete"></div>
+  <div class="titulo"><div>Atendimento</div><div class="p2">de <b>hoje</b></div></div>
+  <p class="frase" id="frase">Sua lista do dia já está separada: quem responder primeiro, quem ligar e quem chamar de novo.</p>
+  <div class="espaco"></div>
+  <a class="botao" id="ir" href="https://script.google.com/macros/s/AKfycbxjzn7om7SztPK49Al7cLBHUqxTR6SSM6yYhSuSJug39g0UaGnNNVH7WxywoD1LGrBX/exec">Começar o dia</a>
+  <div class="rodape">Renan Cardiã · CRECI-SC 52533 · Garopaba</div>
+  <div class="dica" id="dica"><b>Para colocar na tela do celular:</b> no iPhone, pelo Safari, toque em Compartilhar e em "Adicionar à Tela de Início". No Android, toque nos três pontos e em "Adicionar à tela inicial".</div>
+</div>
 <script>
-var instalado=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
-if(instalado){document.querySelector('p').textContent='Abrindo o atendimento de hoje…';setTimeout(function(){location.href=document.getElementById('ir').href},300)}
+var d=new Date(),h=d.getHours();
+var dias=["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"],meses=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+document.getElementById("data").textContent=dias[d.getDay()]+" · "+d.getDate()+" de "+meses[d.getMonth()];
+document.getElementById("ola").textContent=(h<12?"Bom dia":(h<18?"Boa tarde":"Boa noite"))+", Renan.";
+var instalado=window.navigator.standalone===true||window.matchMedia("(display-mode: standalone)").matches;
+if(instalado)document.getElementById("dica").style.display="none";
 </script>
 </body>
 </html>

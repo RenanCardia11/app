@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Z IMOB · Hoje</title>
 <meta name="apple-mobile-web-app-title" content="Z IMOB">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Z IMOB">
 <meta name="theme-color" content="#F5F0E8">
 <link rel="apple-touch-icon" href="icone-180.png">
@@ -20,13 +22,12 @@ p{color:#6E685E;font-size:14px;max-width:320px}
 </head>
 <body>
 <img src="icone-180.png" alt="Z IMOB">
-<p>Abrindo o atendimento de hoje…</p>
+<p>Z IMOB · Atendimento de hoje</p>
 <a id="ir" href="https://script.google.com/macros/s/AKfycbxjzn7om7SztPK49Al7cLBHUqxTR6SSM6yYhSuSJug39g0UaGnNNVH7WxywoD1LGrBX/exec">Abrir o app</a>
 <p>Para colocar na tela do celular: no iPhone, toque em Compartilhar e depois em "Adicionar à Tela de Início". No Android, toque nos três pontos e em "Adicionar à tela inicial".</p>
 <script>
-var instalado=window.navigator.standalone||window.matchMedia('(display-mode: standalone)').matches;
-var primeira=!localStorage.getItem('zimob_viu');try{localStorage.setItem('zimob_viu','1')}catch(e){}
-if(instalado||!primeira){setTimeout(function(){location.href=document.getElementById('ir').href},400)}
+var instalado=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
+if(instalado){document.querySelector('p').textContent='Abrindo o atendimento de hoje…';setTimeout(function(){location.href=document.getElementById('ir').href},300)}
 </script>
 </body>
 </html>

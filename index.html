@@ -11,8 +11,8 @@
 <meta name="application-name" content="Z IMOB">
 <meta name="theme-color" content="#F5F0E8">
 <meta name="robots" content="noindex">
-<link rel="apple-touch-icon" sizes="180x180" href="icone-180.png?v=4">
-<link rel="icon" type="image/png" sizes="192x192" href="icone-192.png?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="icone-180.png?v=5">
+<link rel="icon" type="image/png" sizes="192x192" href="icone-192.png?v=5">
 <link rel="manifest" href="manifest.json?v=4">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,600&family=Poppins:wght@400;500;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -35,6 +35,9 @@ h1{font-family:Lora,Georgia,serif;font-style:italic;font-weight:600;font-size:30
 .rodape{text-align:center;font-size:11px;color:var(--cinza);margin-top:16px;letter-spacing:.4px}
 .dica{margin-top:18px;border-top:1px solid var(--linha);padding-top:14px;font-size:12.5px;color:var(--cinza);line-height:1.5}
 .dica b{color:var(--carbono)}
+.aviso{font-size:13px;color:#A3402C;text-align:center;min-height:0;margin:8px 0 0}.aviso:empty{display:none}
+.botao.sec{background:transparent;color:var(--carbono);border:1.5px solid var(--carbono)!important;margin-top:10px}
+.link{display:block;margin:14px auto 0;background:none;border:0;font-family:inherit;font-size:12.5px;color:var(--cinza);text-decoration:underline}
 </style>
 </head>
 <body>
@@ -46,7 +49,10 @@ h1{font-family:Lora,Georgia,serif;font-style:italic;font-weight:600;font-size:30
   <div class="titulo"><div>Atendimento</div><div class="p2">de <b>hoje</b></div></div>
   <p class="frase" id="frase">Sua lista do dia já está separada: quem responder primeiro, quem ligar e quem chamar de novo.</p>
   <div class="espaco"></div>
+  <button class="botao" id="face" type="button" style="display:none;border:0;font-family:inherit"></button>
+  <div class="aviso" id="faceMsg"></div>
   <a class="botao" id="ir" href="https://script.google.com/macros/s/AKfycbxjzn7om7SztPK49Al7cLBHUqxTR6SSM6yYhSuSJug39g0UaGnNNVH7WxywoD1LGrBX/exec">Começar o dia</a>
+  <button class="link" id="faceTira" type="button" style="display:none">Desativar o Face ID neste celular</button>
   <div class="rodape">Renan Cardiã · CRECI-SC 52533 · Garopaba</div>
   <div class="dica" id="dica"><b>Para colocar na tela do celular:</b> no iPhone, pelo Safari, toque em Compartilhar e em "Adicionar à Tela de Início". No Android, toque nos três pontos e em "Adicionar à tela inicial".</div>
 </div>
@@ -57,6 +63,28 @@ document.getElementById("data").textContent=dias[d.getDay()]+" · "+d.getDate()+
 document.getElementById("ola").textContent=(h<12?"Bom dia":(h<18?"Boa tarde":"Boa noite"))+", Renan.";
 var instalado=window.navigator.standalone===true||window.matchMedia("(display-mode: standalone)").matches;
 if(instalado)document.getElementById("dica").style.display="none";
+
+/* Face ID: o próprio iPhone confere o rosto; o app só abre depois disso. A chave fica guardada no celular (nada vai para a internet). */
+var EXEC="https://script.google.com/macros/s/AKfycbxjzn7om7SztPK49Al7cLBHUqxTR6SSM6yYhSuSJug39g0UaGnNNVH7WxywoD1LGrBX/exec",K="zimob_face_id";
+function lerK(){try{return localStorage.getItem(K)||""}catch(e){return ""}}
+function gravaK(v){try{if(v)localStorage.setItem(K,v);else localStorage.removeItem(K)}catch(e){}}
+function b64(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function bin(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function rnd(n){var u=new Uint8Array(n);crypto.getRandomValues(u);return u}
+var face=document.getElementById("face"),ir=document.getElementById("ir"),msg=document.getElementById("faceMsg"),tira=document.getElementById("faceTira");
+function tela(){var tem=lerK(),pode=!!(window.PublicKeyCredential&&navigator.credentials&&window.isSecureContext);
+  if(!pode){face.style.display="none";return}
+  face.style.display="block";
+  if(tem){face.textContent="Entrar com Face ID";ir.textContent="Entrar sem o Face ID";ir.className="botao sec";tira.style.display="block"}
+  else{face.textContent="Ativar o Face ID e entrar";ir.textContent="Começar o dia sem o Face ID";ir.className="botao sec";tira.style.display="none"}}
+face.onclick=function(){msg.textContent="";var tem=lerK();
+  if(tem){navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:"public-key",id:bin(tem)}],userVerification:"required",timeout:60000}})
+    .then(function(c){if(c){face.textContent="Abrindo…";location.href=EXEC}}).catch(function(e){msg.textContent=e&&e.name=="NotAllowedError"?"O Face ID não confirmou. Tente de novo.":"Não consegui usar o Face ID: "+(e&&e.message||e)})}
+  else{navigator.credentials.create({publicKey:{rp:{name:"Z IMOB"},user:{id:rnd(16),name:"renan",displayName:"Renan Cardiã"},challenge:rnd(32),
+      pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"preferred"},timeout:60000,attestation:"none"}})
+    .then(function(c){gravaK(b64(c.rawId));face.textContent="Face ID ativado. Abrindo…";location.href=EXEC}).catch(function(e){msg.textContent=e&&e.name=="NotAllowedError"?"O Face ID foi cancelado. Tente de novo.":"Não consegui ativar o Face ID: "+(e&&e.message||e)})}};
+tira.onclick=function(){gravaK("");msg.textContent="Face ID desativado neste celular.";tela()};
+tela();
 </script>
 </body>
 </html>
